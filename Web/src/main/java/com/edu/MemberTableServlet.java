@@ -1,7 +1,8 @@
 package com.edu;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,16 +12,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class MemberServlet
+ * Servlet implementation class MemberTableServelet
  */
-@WebServlet("/MemberServlet")
-public class MemberServlet extends HttpServlet {
+@WebServlet("/MemberTableServlet")
+public class MemberTableServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * Default constructor. 
+     * @see HttpServlet#HttpServlet()
      */
-    public MemberServlet() {
+    public MemberTableServlet() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -28,24 +30,27 @@ public class MemberServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 //		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
-		String nameVal = request.getParameter("name1");
-		String ageVal = request.getParameter("age1");
-		String scoreVal = request.getParameter("score1");
-		
+//		테이블 형식으로 화면에 출력
+		response.setContentType("text/html;charset=utf-8");
 		MemberDAO dao = new MemberDAO();
-		Map<String, String> map = new HashMap<>();
-		map.put("name", nameVal);
-		map.put("age", ageVal);
-		map.put("score", scoreVal);
+		List<Map<String,String>> list = dao.getMemberList();
 		
-		dao.insertMember(map);
+		PrintWriter out = response.getWriter();
+		out.print("<h3>Hello,World</h3>");
+		out.print("<table border = 1>");
+		out.print("<thead><tr><th>이름</th><th>나이</th><th>점수</th></thead>");
+		out.print("<tbody>");
+		for(Map<String, String> map : list) {
+			out.print("<tr>");
+			out.print("<td>" + map.get("name") + "</td><td>" + map.get("age") + "</td><td>" + map.get("score") + "</td>");
+			out.print("</tr>");
+		}
+		out.print("</tbody></table>");
+		out.print("</ul>");
+		out.print("<ul><li>Apple</li><li>Banana</li><li>Cherry</li></ul>");
+		}
 		
-		response.sendRedirect("index.html");
-	}
-
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */

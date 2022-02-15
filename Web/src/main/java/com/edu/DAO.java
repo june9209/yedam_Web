@@ -7,8 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAO {
-	PreparedStatement psmt = null;
 	Connection conn = null;
+	PreparedStatement pstmt = null;
 	ResultSet rs = null;
 
 	public void connect() {
@@ -16,9 +16,10 @@ public class DAO {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "prj", "prj");
 			if (conn != null) {
-				System.out.println("정상수 백발백중 나는 명사수 연결.!");
+				System.out.println("정상 연결");
 			}
-		} catch (SQLException | ClassNotFoundException e) {
+
+		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
 	}
@@ -31,9 +32,9 @@ public class DAO {
 				e.printStackTrace();
 			}
 		}
-		if (psmt != null) {
+		if (pstmt != null) {
 			try {
-				psmt.close();
+				pstmt.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>json.html</title>
+<script async src='/cdn-cgi/bm/cv/669835187/api.js'></script></head>
+<body>
+	<script>
+		// Object	 =>		{name: '홍길동', age: 20, score: 80}
+		// JSON		 =>		{"name": '홍길동', "age": 20, "score": 80}
+		// Server	<==>	Client와 데이터를 주고 받는 포맷
+		// xml		 => 	<row><name>홍</name><age>20</age><score>80</score></row>
+		
+		let member = {
+				memberId: 20,
+				memberName: '홍길동',
+				isMarried: false,
+				dob: new Date()
+		}
+		
+		const json = JSON.stringify(member);	// Object => JSON
+		console.log(member);
+		console.log(json);
+		
+		const jObj = JSON.parse(json);	// JSON => Object
+		console.log(jObj);
+		
+		// 페이지의 데이터 부분 쉽게 가져오는 Object : XMLHttpRequest
+		let xhtp = new XMLHttpRequest();
+		xhtp.open('GET', 'MemberJsonServlet');	// 매개값 : 요청방식, 요청페이지 url
+		xhtp.send();
+		xhtp.onload = function() {
+			console.log('on load');
+			console.log(xhtp);
+			let data = JSON.parse(xhtp.responseText);	// JSON => Object
+			// data [{},{},{}]
+			let table = document.createElement('table');
+			table.setAttribute('border','1');
+			data.forEach(function(val, ind, ary) {
+				let tr = document.createElement('tr');
+				
+				let titles = ['name','age','score','is_married'];
+				for(let field of titles) {
+					let td = document.createElement('td');
+					td.innerText = val[field];
+					tr.appendChild(td);
+				}
+				table.appendChild(tr);
+			});
+			
+			let div = document.createElement('div');
+			for (let field in data) {
+				let p = document.createElement('p');
+				p.innerText = `field: ${field}, value: ${data[field]}`;
+				div.appendChild(p);
+			}
+			
+			document.body.appendChild(table);
+			
+		}
+	</script>
+<script type="text/javascript">(function(){window['__CF$cv$params']={r:'6ddfb9e61a8fa1d1',m:'woiUq4UQdLglGrONlOqJatqv3xnq3ba5a6ZxjUWyIgM-1644940585-0-AdLAC15Q6zptnqLniTAVPmVExzZL2Ml0ZIEvHUVFTwg+73DxPIl6f/NlzrcDEqW/ozn/fqAmziowjJmk+G4nVipQCSRwJKCeadTDmpTokA65y+eMHu/cm6B+uwm3VGY9Avjodm/JmnY0NjC7gfS2ZohJ2CLmeoeJvnkqB60/wqU/wOTOOfF+VhkWK6tOI3VQOg==',s:[0xf029476810,0x84f9054991],}})();</script></body>
+</html>

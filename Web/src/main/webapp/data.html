@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>data.html</title>
+<script async src='/cdn-cgi/bm/cv/669835187/api.js'></script></head>
+<body>
+
+	<div id="centerList"></div>
+	<script>
+		let url = 'https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&returnType=JSON&serviceKey=0EXleDG3eHrYpbOj1Y9g6imFIIuMOJOpIOvaXrzGBflr8L7qSfTUMAU7MskTa5cKVWJtzQ5IQmA09P2fliKdnw%3D%3D';
+		let xhtp = new XMLHttpRequest();	// url의 처리정보를 읽어오기 위한 object
+		xhtp.open('GET', url);
+		xhtp.send();
+		xhtp.onload = getCenterList;
+		
+		let contents = ['id','centerName','phoneNumber','sido','sigungu'];
+		
+		function getCenterList()  {
+			let result = JSON.parse(xhtp.responseText);	// JSON => Object
+			console.log('result : ' + result);
+			
+			// sidoArray : ['서울특별시','경상남도','대구광역시']
+			let sidoArr = ['전체'];
+			result.data.forEach(function(center,ind,ary) {
+				if (sidoArr.indexOf(center.sido) == -1) {
+					sidoArr.push(center.sido);
+				}
+			});
+			console.log(sidoArr);
+			sidoArr.forEach(function(sido) {
+				let button = document.createElement('button');
+				button.innerText = sido;
+				button.addEventListener('click', function() {
+					console.log(this.innerText);
+					const searchSido = this.innerText;
+					const filteredData = result.data.filter(function(center) {
+						return searchSido === '전체' ? true : center.sido == searchSido;
+					});
+					console.log(filteredData);
+					document.querySelector('#sidoTable').remove();
+					createTable(filteredData);
+				});
+				document.getElementById('centerList').append(button);
+			});
+			
+			createTable(result.data);
+		}
+		
+		function createTable(data) {
+			
+			// table - thead, tbody
+			const table = document.createElement('table');
+			table.setAttribute('border','1');
+			table.setAttribute('id','sidoTable');
+			const thead= document.createElement('thead');
+			let tr = document.createElement('tr');
+			
+			contents.forEach(function(val,ind,ary) {
+				let th = document.createElement('th');	
+				th.innerText = val.toUpperCase();
+				tr.append(th);
+			});
+			thead.append(tr);
+			
+			// tbody 생성
+			const tbody= document.createElement('tbody');
+			data.forEach(function(val, ind, ary) {
+				tr = document.createElement('tr');
+				for (let field of contents) {
+					let td = document.createElement('td');
+					td.innerText = val[field];
+					tr.append(td);
+				}
+				tbody.append(tr);
+			});
+			
+			table.append(thead, tbody);
+			
+			document.body.append(table);
+		}
+	</script>
+<script type="text/javascript">(function(){window['__CF$cv$params']={r:'6ddfb96ebb130f78',m:'PgPK.0CxHYmQSv87W.vVufAt9_EfxQwBsB4wpsVdmmg-1644940566-0-AWjV/S5KWjk+GTT2ufDdWjlgW8EGhTa75T1HxJDkUBbH6wsdvzRrxjsafCeyZlVAoZfXYgeCtFMk4W6w5jZTEAZ+L0vUU9h8hMSX7KQ5K60NIr9/Kkz9nCbDTRWyymQtah70gwhhdx7U0awseGTFWJU8tW+1mzvIrjEbBUg2RnJsqpIOzpJIQGlFFlKb5Fbltw==',s:[0x77097dc933,0x7b94aad187],}})();</script></body>
+</html>
