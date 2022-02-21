@@ -21,8 +21,17 @@
     <script>
         var plist = document.getElementsByClassName("word");
         for (temp of plist) {
- 			
+        	temp.addEventListener("click", function(){
+        		var a = document.querySelector('div data-price').innerHTML
+        		console.log(a)
+        		
+        		
+        		alert(a)	
+        	})
         }
+        btnAdd.addEventListener("click",function(){
+        	
+        })
     </script>
 </body>
 </html>
