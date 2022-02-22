@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr><td>이름</td><td>국어</td><td>수학</td></tr>
+		</thead>
+		<tbody>
+			<tr data-no="s10"><td>철수</td><td>100</td><td>60</td>
+				<td><button type ="button" class ="btn">확인</button></td>
+			</tr>
+			<tr><td>영희</td><td>50</td><td>100</td></tr>
+			<tr><td>순신</td><td>70</td><td>80</td></tr>
+		</tbody>
+	</table>
+	<div id="result"></div>
+	<script>
+		//국어성적의 합계
+		var k = document.querySelectorAll("tbody tr td:nth-child(2)")
+		var sum = 0;
+		for(a of k){
+			sum += parseInt(a.innerText)
+		}
+		result.innerHTML ="kor= "+sum;
+		
+	</script>
+</body>
+</html>
