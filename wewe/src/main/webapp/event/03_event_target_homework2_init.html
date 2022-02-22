@@ -20,18 +20,15 @@
 </div>
     <script>
         var plist = document.getElementsByClassName("word");
+        console.log(typeof(plist))
+        console.log(plist)
         for (temp of plist) {
-        	temp.addEventListener("click", function(){
-        		var a = document.querySelector('div data-price').innerHTML
-        		console.log(a)
-        		
-        		
-        		alert(a)	
-        	})
-        }
-        btnAdd.addEventListener("click",function(){
+        	asd = document.getAttribute("div");
         	
-        })
+        	console.log(asd)
+        	alert(asd)
+        }
+        	
     </script>
 </body>
 </html>

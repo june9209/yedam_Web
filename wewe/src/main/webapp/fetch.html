@@ -7,28 +7,33 @@
 <body>
 <h2>The XMLHttpRequest Object</h2>
 <p>Let AJAX change this text.</p>
-<input id="targetDt">
-<select id = "nationCd">
-	<option value ="">전체
-	<option value ="K">국내
-	<option value ="F">해외
+<input id="targetDt" value="20220220">
+<select id = "repNationCd">
+	<option value ="">전체</option>
+	<option value ="K">국내</option>
+	<option value ="F">해외</option>
 </select>
 <button type="button" id ="btnMovie">Change Content</button>
 <div id="demo"></div>
+
 <input id="movieCd">
 <button type="button" id ="btnInfo">Change Content</button>
 <div id="info"></div>
+
 <script>
 	btnMovie.addEventListener("click",function(){
 		 let url = "http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.json";
  		 let param = "\key=f5eef3421c602c6cb7ea224104795888&targetDt="
  		 			+targetDt.value
-  					+"\&repNationCd="+nationCd.value;
+  					+"\&repNationCd="+repNationCd.value;
  		 fetch(url+ "?" +param)
  		 .then( res=> res.json())
  		 .then( movie => {
+ 			 
  			let list = movie.boxOfficeResult.dailyBoxOfficeList;
  			for (let list1 of list) {
+ 				let p = document.createElement("p");
+ 				
  			    document.getElementById("demo").innerHTML += list1.movieNm+ "<br>"+"출시일자 : "+list1.movieCd+"<br>";
  				}
  		 })
