@@ -9,17 +9,4 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-   <servlet-name>empList</servlet-name>
-   <servlet-class>com.yedam.EmpListServ</servlet-class>
-   <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-   <servlet-name>empList</servlet-name>
-   <url-pattern>/usr/EmpListServ</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-   <servlet-name>empList</servlet-name>
-   <url-pattern>/std/EmpListServ</url-pattern>
-  </servlet-mapping>
 </web-app>

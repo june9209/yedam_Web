@@ -15,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 //HttpServlet 상속
 //goGet/Post 메서드 오버라이딩
 //@WebServlet 설정
+
 //실행흐름을 개발자가 제어하는 것이 아닌 톰캣 컨테이너가 제어(IoC)
-//싱글톤 :static 필드
+//싱글톤 : static 필드
 //@WebServlet p86참조
 //p93 서블릿 생성과 소멸(실행과정 설명) 한번 슥 해보고 샥 확인해볼것
 @WebServlet(urlPatterns = {"/today","/day"}, loadOnStartup = 1, name = "today")
