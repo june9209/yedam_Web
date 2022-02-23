@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<input type="text" id="sample5_address" placeholder="주소">
+<input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
+<div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
+
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0764acdd90f9b4d0a6de2bd1aeaefa28&libraries=services"></script>
+<script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+            level: 5 // 지도의 확대 레벨
+        };
+
+    //지도를 미리 생성
+    var map = new daum.maps.Map(mapContainer, mapOption);
+    //주소-좌표 변환 객체를 생성
+    var geocoder = new daum.maps.services.Geocoder();
+    //마커를 미리 생성
+    var marker = new daum.maps.Marker({
+        position: new daum.maps.LatLng(37.537187, 127.005476),
+        map: map
+    });
+
+
+    function sample5_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                var addr = data.address; // 최종 주소 변수
+
+                // 주소 정보를 해당 필드에 넣는다.
+                document.getElementById("sample5_address").value = addr;
+                // 주소로 상세 정보를 검색
+                geocoder.addressSearch(data.address, function(results, status) {
+                    // 정상적으로 검색이 완료됐으면
+                    if (status === daum.maps.services.Status.OK) {
+
+                        var result = results[0]; //첫번째 결과의 값을 활용
+
+                        // 해당 주소에 대한 좌표를 받아서
+                        var coords = new daum.maps.LatLng(result.y, result.x);
+                        // 지도를 보여준다.
+                        mapContainer.style.display = "block";
+                        map.relayout();
+                        // 지도 중심을 변경한다.
+                        map.setCenter(coords);
+                        // 마커를 결과값으로 받은 위치로 옮긴다.
+                        marker.setPosition(coords)
+                    }
+                });
+            }
+        }).open();
+    }
+</script>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script>
+		var url = "https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&returnType=JSON&serviceKey=gcXNF3ROmXTY3HurEw%2FYGf44l2QEX69mzsNjc1L0GflDz%2F6qqtzxpToiPzodDBYLCSr52GSIn0zfTiznt5Jb%2Fw%3D%3D"
+		
+				var xhtp = new XMLHttpRequest(); //ajax
+				xhtp.open('GET', url);
+				xhtp.send();
+				
+				
+				xhtp.onload = function(){
+					console.log(xhtp.responseText);
+					var result = JSON.parse(xhtp.responseText);
+					//화면에 출력해주기위한 항목.
+					var contents = ['id' , 'centerName', 'address', 'phoneNumber', 'sido', 'map'];
+					//table형식으로
+					var table = document.createElement('table');
+					table.setAttribute('border','1');
+					table.setAttribute('id','myTable');
+					//헤더부분
+					var thead = document.createElement('thead');
+					var tr = document.createElement('tr');
+					contents.forEach(function(field, ind, ary){
+						var td = document.createElement('th');
+						td.innerText =  field;
+						tr.append(td);
+					})
+					thead.append(tr);
+					//바디부분
+					var tbody = document.createElement('tbody');
+					result.data.forEach(function(center, ind, ary) {
+						// id, centerName, address, phoneNumber, sido, sigungu, lat, lng
+						tr = document.createElement('tr');
+						for(let field of contents){
+							td = document.createElement('td');
+							if(field == 'map'){
+								var a = document.createElement('a');
+								a.innerText = '지도보기';
+								a.setAttribute('href', 'map.html?center='+center.centerName+'&xpos='+center.lat+'&ypos='+center.lng);
+								a.setAttribute('target', '_blank');
+								td.append(a);
+							}else{
+								td.innerText = center[field];
+							}
+							tr.append(td);
+						}
+						
+					tbody.append(tr);
+					//집주소
+					
+					
+					
+					});
+					table.append(thead, tbody);
+					document.body.append(table);
+					//result.data.forEach(function(center, ind, ary){
+					//
+					//});
+				}
+				
+	</script>
+</body>
+</html>

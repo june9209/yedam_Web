@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<input type="text" id='input' value="경북 울릉군 울릉읍 독도안용복길 3" placeholder="주소를 입력하세요">
+	
+	<script>
+		let address = '';
+		var coords = '초기 좌표';
+		
+		function search() {
+			
+			console.log('clicked')
+			address = document.getElementById('input').value;
+			
+			//주소-좌표 변환 객체를 생성합니다
+			var geocoder = new kakao.maps.services.Geocoder();
+
+			//주소로 좌표를 검색합니다
+			geocoder.addressSearch(address, function (result, status) {
+
+				// 정상적으로 검색이 완료됐으면 
+				if (status != kakao.maps.services.Status.OK) {
+					
+					console.log('실패 ' + coords);
+					return;
+				}
+				
+				coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				console.log(coords)
+				location.href = 'map.html?center=' + address + '&xpos=' + coords.Ma + '&ypos=' + coords.La;
+			}); 
+			
+			console.log(coords)
+			console.log(coords.Ma)
+			console.log(coords.La)
+			
+			
+			
+		}
+		
+		
+
+		
+
+	</script>
+
+	
+	<input type="button" id='search' value="검색" onclick="search();">
+
+
+
+	<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0764acdd90f9b4d0a6de2bd1aeaefa28&&libraries=services"></script>
+
+	<script>
+
+
+		const url = "https://api.odcloud.kr/api/15077586/v1/centers?page=1&perPage=284&returnType=JSON&serviceKey=gcXNF3ROmXTY3HurEw%2FYGf44l2QEX69mzsNjc1L0GflDz%2F6qqtzxpToiPzodDBYLCSr52GSIn0zfTiznt5Jb%2Fw%3D%3D";
+		
+		let xhtp = new XMLHttpRequest();	// ajax(비동기방식의 처리)
+		xhtp.open('GET', url);
+		xhtp.send();
+		xhtp.onload = function() {
+			
+			let result = JSON.parse(xhtp.responseText);
+			
+			let contents = ['id','centerName','address','phoneNumber','sido','map'];
+			
+			// table
+			let table = document.createElement('table');
+			table.setAttribute('border','1');
+			table.setAttribute('id','myTable');
+			
+			// thead
+			let thead = document.createElement('thead');
+			
+			let tr = document.createElement('tr');
+			contents.forEach(function(field, ind, ary){
+				let th = document.createElement('th');
+				th.innerText = field;
+				tr.append(th);
+			})
+			thead.append(tr);
+			
+			// tbody
+			let tbody = document.createElement('tbody');
+			
+			result.data.forEach(function(center, ind, ary) {
+				// id, centerName, address, phoneNumber, sido, sigungu, lat, lng
+				tr = document.createElement('tr');
+				for(let field of contents) {
+					let td = document.createElement('td');
+					
+					if(field == 'map') {
+						let a = document.createElement('a');
+						a.innerText = '지도보기';
+						a.setAttribute('href', 'map.html?center=' + center.centerName + '&xpos=' + center.lat + '&ypos=' + center.lng);
+						a.setAttribute('target','_blank');
+						td.append(a);
+					} else {
+						td.innerText = center[field];
+					}
+					tr.append(td);
+				}
+				tbody.append(tr);
+				
+				// 집 주소
+				
+				
+				
+				
+			});
+			
+			table.append(thead, tbody);
+			document.body.append(table);
+		}
+		
+		
+	</script>
+
+
+
+</body>
+</html>
